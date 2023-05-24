@@ -1,0 +1,7 @@
+node_modules
+package-lock.json
+.env
+/utils/datas.json
+db.sqlite
+db.sqlite-shm
+db.sqlite-wal

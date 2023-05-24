@@ -1,0 +1,358 @@
+{
+    "utils": {
+        "en": {
+            "yes": "Yes",
+            "no": "No",
+            "environ": "about",
+            "second": "second",
+            "minute": "minute",
+            "hour": "hour",
+            "day": "day",
+            "now": "now",
+            "player": "player",
+            "attempt": "attempt",
+            "server": "server",
+            "join": "join",
+            "leave": "leave",
+            "start": "start",
+            "cancel": "cancel",
+            "cmdCancel": "Command canceled",
+            "leaderboard": "Leaderboard",
+            "noData": "I don't have enough data!",
+            "others": "and others...",
+            "win": "You win!",
+            "lose": "You lose!",
+            "equality": "Equality!",
+            "userNotFound": "The user is not in the server!"
+        },
+        "fr": {
+            "yes": "Oui",
+            "no": "Non",
+            "environ": "environ",
+            "second": "seconde",
+            "minute": "minute",
+            "hour": "heure",
+            "day": "jour",
+            "now": "maintenant",
+            "player": "joueur",
+            "attempt": "tentative",
+            "server": "serveur",
+            "join": "rejoindre",
+            "leave": "quitter",
+            "start": "démarrer",
+            "cancel": "annuler",
+            "cmdCancel": "Commande annulée",
+            "leaderboard": "Classement",
+            "noData": "Je n'ai pas assez de données !",
+            "others": "et plus...",
+            "win": "Tu as gagné !",
+            "lose": "Tu as perdu !",
+            "equality": "Égalité !",
+            "userNotFound": "L'utilisateur n'est pas sur le serveur !"
+        }
+    },
+    "welcome": {
+        "en": "**{member} has join the server!**",
+        "fr": "**{member} a rejoint le serveur !**"
+    },
+    "language": {
+        "en": {
+            "select": "Please select a language",
+            "set": "The new language has been set"
+        },
+        "fr": {
+            "select": "Veuillez sélectionner une langue",
+            "set": "La nouvelle langue a bien été définie"
+        }
+    },
+    "permissions": {
+        "en": {
+            "member": "You missing `{perm}` permission in this channel!",
+            "bot": "I missing `{perm}` permission in this channel!"
+        },
+        "fr": {
+            "member": "Vous devez avoir la permission `{perm}` pour utiliser cette commande !",
+            "bot": "Il me manque la permission `{perm}` dans ce channel !"
+        }
+    },
+    "cooldown": {
+        "en": "{user}, please wait {time} before using the {cmd} command again.",
+        "fr": "{user}, veuillez patienter {time} avant de ré-utiliser la commande {cmd}."
+    },
+    "error": {
+        "en": "An error has occurred, please contact [support server]({link}) for **more information**.",
+        "fr": "Une erreur s'est produite, veuillez contacter le [serveur de support]({link}) pour **plus d'informations**."
+    },
+    "blockLinks": {
+        "en": {
+            "discord": "{user}, Discord links are not allowed on this server!",
+            "all": "{user}, Links are not allowed on this server!"
+        },
+        "fr": {
+            "discord": "{user}, Les liens discord ne sont pas autorisés sur ce serveur !",
+            "all": "{user}, Les liens ne sont pas autorisés sur ce serveur !"
+        }
+    },
+    "mention": {
+        "en": "Did someone mention me?\nI use slash commands! {/help}",
+        "fr": "Quelqu'un m'a mentionné ?\nJ'utilise les commandes slash {/help}"
+    },
+    "temp": {
+        "en": {
+            "Vname": "Join to create",
+            "Tname": "{user}'s channel"
+        },
+        "fr": {
+            "Vname": "Vocaux temporaires",
+            "Tname": "Channel de {user}"
+        }
+    },
+    "modules": {
+        "en": {
+            "enabled": "Good, the module **{name}** is set up!",
+            "set": "Good, {name} is set up!",
+            "alreadyEnabled": "The module is already set up!",
+            "disabled": "The module is disabled!",
+            "nowDisabled": "The module is now disabled!",
+            "alreadyDisabled": "The module is already disabled!"
+        },
+        "fr": {
+            "enabled": "Super, le module **{name}** est activé !",
+            "set": "Super, {name} est activé !",
+            "alreadyEnabled": "Le module est déjà activé !",
+            "disabled": "Le module est désactivé !",
+            "nowDisabled": "Le module est maintenant désactivé !",
+            "alreadyDisabled": "Le module est déjà désactivé !"
+        }
+    },
+    "ytNotifier": {
+        "en": {
+            "invalidLink": "Please provide a valid youtube channel link!\nExample: `https://www.youtube.com/channel/{id}`",
+            "invalidTxtChannel": "Please provide a valid text channel!",
+            "invalidChannelId": "The channel ID is invalid!",
+            "enabled": "Good, the module is set up for {channel}"
+        },
+        "fr": {
+            "invalidLink": "Veuillez fournir un lien valide pour la chaîne youtube !\nExemple: `https://www.youtube.com/channel/{id}`",
+            "invalidTxtChannel": "Veuillez fournir un channel textuel valide !",
+            "invalidChannelId": "Le channel ID est invalide !",
+            "enabled": "Super, le module est activé pour {channel}"
+        }
+    },
+    "avatar": {
+        "en": "{user}'s avatar",
+        "fr": "Avatar de {user}"
+    },
+    "clear": {
+        "en": {
+            "message": "I deleted {number} message{s}",
+            "information": "I can only bulk delete messages that are under 14 days old!"
+        },
+        "fr": {
+            "message": "J'ai supprimé {number} message{s}",
+            "information": "Je ne peux supprimer que les messages datant de moins de 14 jours !"
+        }
+    },
+    "first": {
+        "en": {
+            "notYou": "You can't ask you to duel!",
+            "notBot": "You can't play with a bot!",
+            "request": "Hey {opponent}, do you want to play with {user}?",
+            "noAnswer": "No answer, the duel has been canceled!",
+            "button": "Shoot!",
+            "win": "Well done {user}, you were the fastest!"
+        },
+        "fr": {
+            "notYou": "Tu ne peux pas te demander un duel !",
+            "notBot": "Tu ne peux pas jouer avec un bot !",
+            "request": "Hey {opponent}, veux-tu jouer avec {user} ?",
+            "noAnswer": "Pas de réponse, le duel a été annulé !",
+            "button": "Tirer !",
+            "win": "Bien joué {user}, tu as été le plus rapide !"
+        }
+    },
+    "guessLogo": {
+        "en": {
+            "game": "Guess Logo",
+            "message": "<:join:1052641045361479710> {user} is hosting a **Guess Logo**.\n<:script:1052640492019535872> Rules: A logo will appear and you will have 60 seconds to guess which brand it belongs to. The first one to find it wins a point.",
+            "wait": "waiting for the host",
+            "info": "The game will take place in this channel {thread}!",
+            "start": "The host chooses the parameters",
+            "rounds": "How many rounds do you want to play?",
+            "select": "Select a number",
+            "starting": "The game will start in 5 seconds! <a:load:869677348264493076>",
+            "ingame": "Game in progress",
+            "brand": "What is the brand?",
+            "close": "You are close!",
+            "win": "{user} won!",
+            "lose": "You have lost, it was **{brand}**!",
+            "end": "Game finished",
+            "leaderboard": "View the [leaderboard]({url})",
+            "errorThread": "I was not able to create a private thread!",
+            "threadNotExist": "The thread does not exist!",
+            "notEnoughPlayers": "You need at least 2 players!",
+            "alreadyJoined": "You have already joined!",
+            "hostLeave": "You can't leave!",
+            "leave": "You have left the game.",
+            "notJoined": "You are not in the list of players!",
+            "tooLong": "You have taken too long to choose!",
+            "cant": "You can't do that!"
+        },
+        "fr": {
+            "game": "Devine le logo",
+            "message": "<:join:1052641045361479710> {user} lance un **Devine le logo**.\n<:script:1052640492019535872> Règles: Un logo apparaîtra et vous aurez 60 secondes pour deviner à quelle marque il appartient. Celui qui le trouve en premier gagne un point.",
+            "wait": "en attente de l'hôte",
+            "info": "Le jeu aura lieu dans ce channel {thread} !",
+            "start": "L'hôte choisit les paramètres",
+            "rounds": "Combien de rounds voulez-vous jouer ?",
+            "select": "Sélectionnez un nombre",
+            "starting": "Le jeu va commencer dans 5 secondes ! <a:load:869677348264493076>",
+            "ingame": "Jeu en cours",
+            "brand": "Quelle est la marque ?",
+            "close": "Tu es proche !",
+            "win": "{user} a gagné !",
+            "lose": "Dommage, c'était **{brand}** !",
+            "end": "Jeu terminé",
+            "leaderboard": "Voir le [classement]({url})",
+            "errorThread": "Je n'ai pas réussi à créer un thread privé !",
+            "threadNotExist": "Le thread n'existe plus !",
+            "notEnoughPlayers": "Vous avez besoin d'au moins 2 joueurs pour lancer une partie !",
+            "alreadyJoined": "Vous êtes déjà dans le jeu !",
+            "hostLeave": "Vous ne pouvez pas quitter le jeu !",
+            "leave": "Vous avez quitté le jeu.",
+            "notJoined": "Vous n'êtes pas dans la liste des joueurs !",
+            "tooLong": "Vous avez pris trop de temps pour choisir !",
+            "cant": "Vous ne pouvez pas faire ça !"
+        }
+    },
+    "help": {
+        "en": {
+            "title": "List of commands",
+            "description": "If you still need help, join the [support server]({link})."
+        },
+        "fr": {
+            "title": "Liste des commandes",
+            "description": "Sinon vous pouvez rejoindre le [serveur de support]({link})."
+        }
+    },
+    "invite": {
+        "en": {
+            "message": "Click the button below to invite the bot",
+            "button": "Invite the Bot"
+        },
+        "fr": {
+            "message": "Cliquez sur le bouton ci-dessous pour inviter le bot",
+            "button": "Inviter le Bot"
+        }
+    },
+    "leaderboard": {
+        "en": {
+            "loading": "Loading of all data <a:load:869677348264493076>",
+            "titleLuckGlobal": "Ranking of all users for the luck command",
+            "titleLuckGuild": "Ranking of this guild for the luck command",
+            "titleLevels": "Ranking of the 7 most active users",
+            "howToEnableLevels": "You can activate it by doing the command {/levels}"
+        },
+        "fr": {
+            "loading": "Chargement de toutes les données <a:load:869677348264493076>",
+            "titleLuckGlobal": "Classement de tous les utilisateurs pour la commande luck",
+            "titleLuckGuild": "Classement de ce serveur pour la commande luck",
+            "titleLevels": "Classement des 7 utilisateurs les plus actifs",
+            "howToEnableLevels": "Vous pouvez l'activer en faisant la commande {/levels}"
+        }
+    },
+    "luck": {
+        "en": {
+            "noPerms": "The bot is not high enough in the roles to do this! He must be above Lucky's roles.",
+            "title": "Luck",
+            "description": "||{number1}|| <:leftarrow:920727307574976563> If this number is {number2}, you win the `{role}` role",
+            "description2": "||{number1}|| <:leftarrow:920727307574976563> If this number is {number2}, you will be even luckier than you already are!"
+        },
+        "fr": {
+            "noPerms": "Le bot n'est pas assez haut dans les rôles pour faire ça ! Il doit être au dessus des rôles Lucky.",
+            "title": "Chance",
+            "description": "||{number1}|| <:leftarrow:920727307574976563> Si ce nombre est {number2}, tu gagnes le rôle `{role}`",
+            "description2": "||{number1}|| <:leftarrow:920727307574976563> Si ce nombre est {number2}, tu seras encore plus chanceux que tu ne l'es déjà !"
+        }
+    },
+    "ping": {
+        "en": {
+            "bot": "Bot latency",
+            "api": "Discord api latency"
+        },
+        "fr": {
+            "bot": "Latence du bot",
+            "api": "Latence de l'api discord"
+        }
+    },
+    "rps": {
+        "en": {
+            "title": "Rock Paper Scissors",
+            "description": "Click on a button to play!",
+            "yourChoice": "Your choice",
+            "botChoice": "Bot choice"
+        },
+        "fr": {
+            "title": "Pierre Feuille Ciseaux",
+            "description": "Cliquez sur un bouton pour jouer !",
+            "yourChoice": "Ton choix",
+            "botChoice": "Choix du bot"
+        }
+    },
+    "serverinfo": {
+        "en": {
+            "server": "Server",
+            "serverName": "Server name",
+            "members": "Members",
+            "commandsUsed": "Commands used",
+            "createdServer": "Created server"
+        },
+        "fr": {
+            "server": "Serveur",
+            "serverName": "Nom du serveur",
+            "members": "Membres",
+            "commandsUsed": "Commandes utilisées",
+            "createdServer": "Serveur créé"
+        }
+    },
+    "slots": {
+        "en": "Slots",
+        "fr": "Machine à sous"
+    },
+    "stats": {
+        "en": {
+            "servers": "Servers",
+            "users": "Users",
+            "commands": "Commands"
+        },
+        "fr": {
+            "servers": "Serveurs",
+            "users": "Utilisateurs",
+            "commands": "Commandes"
+        }
+    },
+    "support": {
+        "en": {
+            "message": "Click the button below to join the support server",
+            "button": "Join the Support Server"
+        },
+        "fr": {
+            "message": "Cliquez sur le bouton ci-dessous pour rejoindre le serveur de support",
+            "button": "Rejoindre le serveur de support"
+        }
+    },
+    "userinfo": {
+        "en": {
+            "user": "User",
+            "username": "Username",
+            "joinedDiscord": "Joined Discord",
+            "joinedServer": "Joined Server"
+        },
+        "fr": {
+            "user": "Utilisateur",
+            "username": "Nom d'utilisateur",
+            "joinedDiscord": "A rejoint Discord",
+            "joinedServer": "A rejoint le serveur"
+        }
+    }
+}
