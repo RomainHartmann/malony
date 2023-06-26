@@ -29,7 +29,7 @@ module.exports = {
                 embeds: [
                     new Discord.EmbedBuilder()
                         .setColor(client.config.greencolor)
-                        .setDescription(`${client.langs("clear", language).message.replace("{number}", r.size).replace("{s}", r.size > 1 ? "s" : "")}${r.size !== number ? `, ${client.langs("clear", language).information.toLowerCase()}` : ""}`)
+                        .setDescription(`${client.langs("clear", language).message.replace("{number}", r.size).replace("{s}", r.size !== 1 ? "s" : "")}${r.size !== number ? `, ${client.langs("clear", language).information.toLowerCase()}` : ""}`)
                 ]
             });
         });

@@ -5,7 +5,7 @@ module.exports = async (client, guild) => {
     if (!guild || guild.available === false) return;
 
     if (!client.db.prepare("SELECT * FROM guilds WHERE id = ?").get(guild.id)) {
-        client.db.prepare("INSERT OR REPLACE INTO guilds (id, name, language, commandsUsed, tempchannel, levels, blockLinks, yn_ytChannel, yn_txtChannel, yn_roleId, welcomeChannel) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);").run(guild.id, guild.name, client.config.defaultLanguage, 0, null, null, null, null, null, null, null);
+        client.db.prepare("INSERT OR REPLACE INTO guilds (id, name, language, commandsUsed, tempchannel, levels, blockLinks, yn_ytChannel, yn_txtChannel, yn_roleId, welcomeChannel, rpsDaily, rpsLeaderboardUser, rpsLeaderboardBot, rpsPing) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);").run(guild.id, guild.name, client.config.defaultLanguage, 0, null, null, null, null, null, null, null, null, 0, 0, null);
         client.logs.db(`Adding guild ${guild.name} (${guild.id}) to database.`);
     }
 

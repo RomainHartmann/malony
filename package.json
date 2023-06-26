@@ -1,9 +1,8 @@
 {
     "name": "malony",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "description": "Malony is the best discord bot for games, levels and more.",
     "main": "index.js",
-    "private": true,
     "scripts": {
         "start": "node ."
     },

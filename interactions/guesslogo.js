@@ -106,7 +106,7 @@ module.exports = {
                             new Discord.EmbedBuilder()
                                 .setColor("Grey")
                                 .setDescription(client.langs("guessLogo", language).message.replace("{user}", interaction.user))
-                                .setFooter({ text: `${players.length} ${client.langs("utils", language).player}${players.length > 1 ? "s" : ""}` })
+                                .setFooter({ text: `${players.length} ${client.langs("utils", language).player}${players.length !== 1 ? "s" : ""}` })
                         ]
                     });
                 } else {
@@ -158,7 +158,7 @@ module.exports = {
                             new Discord.EmbedBuilder()
                                 .setColor("Grey")
                                 .setDescription(client.langs("guessLogo", language).message.replace("{user}", interaction.user))
-                                .setFooter({ text: `${players.length} ${client.langs("utils", language).player}${players.length > 1 ? "s" : ""}` })
+                                .setFooter({ text: `${players.length} ${client.langs("utils", language).player}${players.length !== 1 ? "s" : ""}` })
                         ]
                     });
                 } else {

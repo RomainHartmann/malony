@@ -18,6 +18,7 @@ module.exports = {
                         { name: 'Block Links', value: client.db.prepare('SELECT COUNT(*) FROM guilds WHERE blockLinks IS NOT NULL').get()['COUNT(*)'].toString() },
                         { name: 'Youtube Notifier', value: client.db.prepare('SELECT COUNT(*) FROM guilds WHERE yn_ytChannel IS NOT NULL').get()['COUNT(*)'].toString() },
                         { name: 'Welcome Channel', value: client.db.prepare('SELECT COUNT(*) FROM guilds WHERE welcomeChannel IS NOT NULL').get()['COUNT(*)'].toString() },
+                        { name: 'RPS Daily', value: client.db.prepare('SELECT COUNT(*) FROM guilds WHERE rpsDaily IS NOT NULL').get()['COUNT(*)'].toString() },
                     )
             ]
         });

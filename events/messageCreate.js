@@ -9,7 +9,7 @@ module.exports = async (client, message) => {
 
         let guildData = client.db.prepare("SELECT * FROM guilds WHERE id = ?").get(message.guild.id);
         if (!guildData) {
-            client.db.prepare("INSERT OR REPLACE INTO guilds (id, name, language, commandsUsed, tempchannel, levels, blockLinks, yn_ytChannel, yn_txtChannel, yn_roleId, welcomeChannel) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);").run(message.guild.id, message.guild.name, client.config.defaultLanguage, 0, null, null, null, null, null, null, null);
+            client.db.prepare("INSERT OR REPLACE INTO guilds (id, name, language, commandsUsed, tempchannel, levels, blockLinks, yn_ytChannel, yn_txtChannel, yn_roleId, welcomeChannel, rpsDaily, rpsLeaderboardUser, rpsLeaderboardBot, rpsPing) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);").run(message.guild.id, message.guild.name, client.config.defaultLanguage, 0, null, null, null, null, null, null, null, null, 0, 0, null);
             guildData = client.db.prepare("SELECT * FROM guilds WHERE id = ?").get(message.guild.id);
         }
         if (guildData?.language) language = guildData.language;
@@ -107,7 +107,7 @@ module.exports = async (client, message) => {
                             embeds: [
                                 new Discord.EmbedBuilder()
                                     .setColor(client.config.redcolor)
-                                    .setDescription(client.langs("cooldown", language).replace("{user}", message.author).replace(" {time}", timeLeft.toFixed(1) >= 2 ? (timeLeft.toFixed(1) > 60 ? ` ${client.langs("utils", language).environ} ${(Math.floor(timeLeft.toFixed(1) / 60) + 1).toString().split(".")[0]} ${client.langs("utils", language).minute}${(Math.floor(timeLeft.toFixed(1) / 60) + 1) >= 2 ? "s" : ""}` : ` ${timeLeft.toFixed(1).toString().split(".")[0]} ${client.langs("utils", language).second}${timeLeft.toFixed(1) > 1 ? "s" : ""}`) : "").replace("{cmd}", cmd2 ? `${cmd2.interactionId ? `</${cmd2.name}${cmd2?.options && cmd2?.options[0]?.type == 1 ? ` ${cmd2?.options[0].name}` : ""}:${cmd2.interactionId}>` : `\`${cmd.name}\``}` : `\`${cmd.name}\``))
+                                    .setDescription(client.langs("cooldown", language).replace("{user}", message.author).replace(" {time}", timeLeft.toFixed(1) >= 2 ? (timeLeft.toFixed(1) > 60 ? ` ${client.langs("utils", language).environ} ${(Math.floor(timeLeft.toFixed(1) / 60) + 1).toString().split(".")[0]} ${client.langs("utils", language).minute}${(Math.floor(timeLeft.toFixed(1) / 60) + 1) >= 2 ? "s" : ""}` : ` ${timeLeft.toFixed(1).toString().split(".")[0]} ${client.langs("utils", language).second}${timeLeft.toFixed(1) !== 1 ? "s" : ""}`) : "").replace("{cmd}", cmd2 ? `${cmd2.interactionId ? `</${cmd2.name}${cmd2?.options && cmd2?.options[0]?.type == 1 ? ` ${cmd2?.options[0].name}` : ""}:${cmd2.interactionId}>` : `\`${cmd.name}\``}` : `\`${cmd.name}\``))
                             ],
                             ephemeral: true
                         });

@@ -39,7 +39,7 @@ Array("extraevents", "loader").forEach(handler => {
 const guildsTable = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'guilds';").get();
 if (!guildsTable['count(*)']) {
     client.logs.db("Creating guilds table");
-    sql.prepare("CREATE TABLE guilds (id TEXT PRIMARY KEY, name TEXT, language TEXT, commandsUsed INTEGER, tempchannel TEXT, levels TEXT, blockLinks TEXT, yn_ytChannel TEXT, yn_txtChannel TEXT, yn_roleId TEXT, welcomeChannel TEXT);").run();
+    sql.prepare("CREATE TABLE guilds (id TEXT PRIMARY KEY, name TEXT, language TEXT, commandsUsed INTEGER, tempchannel TEXT, levels TEXT, blockLinks TEXT, yn_ytChannel TEXT, yn_txtChannel TEXT, yn_roleId TEXT, welcomeChannel TEXT, rpsDaily TEXT, rpsLeaderboardUser INTEGER, rpsLeaderboardBot INTEGER, rpsPing TEXT);").run();
     sql.prepare("CREATE UNIQUE INDEX idx_guilds_id ON guilds (id);").run();
     sql.pragma("synchronous = 1");
     sql.pragma("journal_mode = wal");

@@ -299,6 +299,36 @@
             "botChoice": "Choix du bot"
         }
     },
+    "rpsDaily": {
+        "en": {
+            "title": "Daily Rock Paper Scissors",
+            "title2": "bot vs {users} user{s}",
+            "description": "Bot vs Users",
+            "vote": "You just voted for today, come back tomorrow to see the result!",
+            "usersWon": "Users won!",
+            "botWon": "The bot won...",
+            "draw": "Draw!",
+            "bot": "Bot",
+            "users": "Users",
+            "botWins": "Bot Wins",
+            "usersWins": "Users Wins",
+            "voteFooter": "{user} just voted for {emoji}"
+        },
+        "fr": {
+            "title": "Pierre Feuille Ciseaux Quotidien",
+            "title2": "bot vs {users} utilisateur{s}",
+            "description": "Bot vs Utilisateurs",
+            "vote": "Tu viens de voter pour aujourd'hui, reviens demain pour voir le résultat !",
+            "usersWon": "Les utilisateurs ont gagné !",
+            "botWon": "Le bot a gagné...",
+            "draw": "Match nul !",
+            "bot": "Bot",
+            "users": "Utilisateurs",
+            "botWins": "Victoires du bot",
+            "usersWins": "Victoires des utilisateurs",
+            "voteFooter": "{user} vient de voter pour {emoji}"
+        }
+    },
     "serverinfo": {
         "en": {
             "server": "Server",

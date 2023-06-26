@@ -35,8 +35,6 @@ module.exports = {
     ],
     run: async (client, interaction, language) => {
 
-        // try to sort the array by the number of attempts when all the levels is the same
-
         interaction.editReply({
             embeds: [
                 new Discord.EmbedBuilder()

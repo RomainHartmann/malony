@@ -7,12 +7,6 @@ module.exports = {
 
         client.db.prepare("UPDATE members SET usingLuckCommand = usingLuckCommand + 1 WHERE guildId = ? AND id = ?").run(message.guild.id, message.author.id);
 
-        const embed = new Discord.EmbedBuilder()
-            .setColor("Grey")
-            .setDescription("<a:load:869677348264493076>")
-
-        const msg = await message.reply({ embeds: [embed] });
-
         let level = 0;
         const all = [
             { role: { name: 'Lucky🎉', color: '#1cedce' }, slice: 100 },
@@ -40,7 +34,7 @@ module.exports = {
             const number2 = Math.floor(Math.random() * (all[level]?.slice || all[2].slice)) + 1;
 
             if ((data[0]?.luckRole && data[level]?.luckRole) && message.guild.members.me.roles.highest.rawPosition < data[0].luckRole.rawPosition || message.guild.members.me.roles.highest.rawPosition < data[level]?.luckRole?.rawPosition) {
-                return msg.edit({
+                return message.reply({
                     embeds: [
                         new Discord.EmbedBuilder()
                             .setColor(client.config.redcolor)
@@ -49,9 +43,10 @@ module.exports = {
                 });
             }
 
-            msg.edit({
+            let msg = await message.reply({
                 embeds: [
-                    embed
+                    new Discord.EmbedBuilder()
+                        .setColor("Grey")
                         .setAuthor({ name: client.langs("luck", language).title })
                         .setDescription((level >= 3 ? client.langs("luck", language).description2 : client.langs("luck", language).description).replace("{number1}", number1).replace("{number2}", number2).replace("{role}", all[level]?.role.name || all[0].role.name))
                 ]

@@ -8,11 +8,11 @@ C'est un projet qui me tient à cœur, que j'ai construit avec beaucoup de temps
 
 # Licence
 
-Ce projet est sous licence [Apache License 2.0](https://github.com/RomainHartmann/Malony/blob/main/LICENSE).
+Ce projet est sous [licence](https://github.com/RomainHartmann/Malony/blob/main/LICENSE).
 
 # Contribution
 
-Toutes les contributions sont les bienvenues ! Si vous avez des suggestions ou des corrections, n'hésitez pas à faire un pull request.
+Si vous avez des suggestions ou des corrections, n'hésitez pas à faire un pull request.
 
 # Support
 
