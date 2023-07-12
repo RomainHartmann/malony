@@ -31,7 +31,7 @@ module.exports = {
                     .setColor(client.config.color)
                     .setTitle(client.langs("userinfo", language).user)
                     .setDescription(
-                        `**${client.langs("userinfo", language).username} :** \`${user.tag}\` (${user})\n` +
+                        `**${client.langs("userinfo", language).username} :** \`${user.username}\` (${user})\n` +
                         `**ID :** \`${user.id}\`\n` +
                         `**${client.langs("userinfo", language).joinedDiscord} :** <t:${parseInt(user.createdTimestamp / 1000)}:f> (<t:${parseInt(user.createdTimestamp / 1000)}:R>)\n\n` +
                         `**${client.langs("userinfo", language).joinedServer} :** <t:${parseInt(member.joinedTimestamp / 1000)}:f> (<t:${parseInt(member.joinedTimestamp / 1000)}:R>)\n` +

@@ -2,10 +2,11 @@
 const config = require("./config.js");
 const SQLite = require("better-sqlite3");
 const sql = new SQLite('./utils/db/db.sqlite');
+const autoReconnect = new SQLite("./utils/db/autoReconnect.sqlite");
 const file = require('./utils/languages.json');
 
 const client = new Discord.Client({
-    fetchAllMembers: false,
+    fetchAllMembers: true,
     failIfNotExists: false,
     intents: 33411,
     allowedMentions: {
@@ -60,6 +61,16 @@ if (!autoTempChannelsTable['count(*)']) {
     sql.pragma("journal_mode = wal");
 }
 client.db = sql;
+
+const autoReconnectTable = autoReconnect.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'autoReconnect';").get();
+if (!autoReconnectTable['count(*)']) {
+    client.logs.db("Creating autoReconnect table");
+    autoReconnect.prepare("CREATE TABLE autoReconnect (id TEXT PRIMARY KEY, time INTEGER, channel TEXT, rpsDmessage TEXT, score TEXT, usersVotes TEXT);").run();
+    autoReconnect.prepare("CREATE UNIQUE INDEX idx_autoReconnect_id ON autoReconnect (id);").run();
+    autoReconnect.pragma("synchronous = 1");
+    autoReconnect.pragma("journal_mode = wal");
+}
+client.autoReconnect = autoReconnect;
 
 client.langs = (textId, lang) => {
     if (!textId) throw new Error(`-Translate- Missing textId`);

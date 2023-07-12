@@ -10,7 +10,7 @@ module.exports = async (client, member) => {
         channel.send({
             embeds: [
                 new Discord.EmbedBuilder()
-                    .setAuthor({ name: member.user.tag, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
+                    .setAuthor({ name: member.user.username, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
                     .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
                     .setDescription(client.langs("welcome", guildDb.language).replace("{member}", `${member}`))
                     .setFooter({ text: `ID: ${member.id}` })

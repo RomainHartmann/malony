@@ -2,12 +2,12 @@ const https = require("node:https");
 const Discord = require("discord.js");
 const levenshtein = require('fast-levenshtein');
 
-async function dailyInterval(client, hour, returnTime = false) {
+async function dailyInterval(client, hour, returnNext = false) {
     let now = new Date();
     let targetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, 0, 0, 0);
     if (now > targetTime) targetTime.setDate(targetTime.getDate() + 1);
     let inT = targetTime.getTime() - now.getTime();
-    if (returnTime) return inT;
+    if (returnNext) return inT;
 
     setTimeout(function atHour() {
         const guilds = client.db.prepare("SELECT * FROM guilds WHERE rpsDaily IS NOT NULL;").all();
@@ -25,6 +25,7 @@ async function rpsDaily(client, guildDb, channel, hour) {
 
     client.logs.action(`${guildDb.name} - RPS Daily`);
     guildDb = client.db.prepare("SELECT * FROM guilds WHERE id = ?").get(guildDb.id);
+    reconnectDb = client.autoReconnect.prepare("SELECT * FROM autoReconnect WHERE id = ?").get(guildDb.id);
 
     const choices = {
         rock: "🪨",
@@ -55,28 +56,31 @@ async function rpsDaily(client, guildDb, channel, hour) {
             new Discord.ActionRowBuilder()
                 .addComponents(
                     new Discord.ButtonBuilder()
-                        .setCustomId('rock')
+                        .setCustomId('rockDaily')
                         .setEmoji("🪨")
                         .setStyle(Discord.ButtonStyle.Secondary)
                 )
                 .addComponents(
                     new Discord.ButtonBuilder()
-                        .setCustomId('paper')
+                        .setCustomId('paperDaily')
                         .setEmoji("📰")
                         .setStyle(Discord.ButtonStyle.Secondary)
                 )
                 .addComponents(
                     new Discord.ButtonBuilder()
-                        .setCustomId('scissors')
+                        .setCustomId('scissorsDaily')
                         .setEmoji("✂️")
                         .setStyle(Discord.ButtonStyle.Secondary)
                 )
         ]
     });
 
+    // set autoconnect, if the bot goes down
+    client.autoReconnect.prepare("INSERT OR REPLACE INTO autoReconnect (id, time, channel, rpsDmessage, score, usersVotes) VALUES (?, ?, ?, ?, ?, ?);").run(guildDb.id, Date.now(), channel.id, message.id, JSON.stringify(score), null);
+    // TODO: reset autoconnect when the system is disabled
     let Time = await dailyInterval(client, hour, true);
 
-    const filter = i => i.message.id == message.id && !i.user.bot && !voted.has(i.user.id);
+    const filter = i => i.message.id == message.id && !i.user.bot;
     const collector = channel.createMessageComponentCollector({
         componentType: Discord.ComponentType.Button,
         time: Time,
@@ -85,39 +89,42 @@ async function rpsDaily(client, guildDb, channel, hour) {
 
     collector.on('collect', b => {
 
+        if (voted.has(b.user.id)) return b.reply({ embeds: [new Discord.EmbedBuilder().setColor(client.config.redcolor).setDescription(client.langs("rpsDaily", guildDb.language).alreadyVoted)], ephemeral: true });
         let choice = b.customId;
 
-        if (score.hasOwnProperty(choice)) {
+        /* Le code ci-dessus vérifie si l'objet "score" a une propriété nommée "choice". */
+        if (score.hasOwnProperty(choice.replace("Daily", ""))) {
             voted.add(b.user.id);
-            score[choice]++;
+            score[choice.replace("Daily", "")]++;
+            client.autoReconnect.prepare("UPDATE autoReconnect SET usersVotes = ?, score = ? WHERE id = ?").run(JSON.stringify(Array.from(voted)), JSON.stringify(score), guildDb.id);
 
             message.edit({
                 embeds: [
                     new Discord.EmbedBuilder()
                         .setColor(client.config.color)
                         .setTitle(`${client.langs("rpsDaily", guildDb.language).title}`)
-                        .setDescription(client.langs("rpsDaily", guildDb.language).voteFooter.replace("{user}", b.user).replace("{emoji}", choices[b.customId]))
+                        .setDescription(client.langs("rpsDaily", guildDb.language).voteFooter.replace("{user}", b.user).replace("{emoji}", choices[b.customId.replace("Daily", "")]))
                         .setFooter({ text: client.langs("rpsDaily", guildDb.language).title2.replace("{users}", voted.size).replace("{s}", voted.size != 1 ? "s" : "") })
                 ],
                 components: [
                     new Discord.ActionRowBuilder()
                         .addComponents(
                             new Discord.ButtonBuilder()
-                                .setCustomId('rock')
+                                .setCustomId('rockDaily')
                                 .setEmoji("🪨")
                                 .setLabel(score.rock.toString())
                                 .setStyle(Discord.ButtonStyle.Secondary)
                         )
                         .addComponents(
                             new Discord.ButtonBuilder()
-                                .setCustomId('paper')
+                                .setCustomId('paperDaily')
                                 .setEmoji("📰")
                                 .setLabel(score.paper.toString())
                                 .setStyle(Discord.ButtonStyle.Secondary)
                         )
                         .addComponents(
                             new Discord.ButtonBuilder()
-                                .setCustomId('scissors')
+                                .setCustomId('scissorsDaily')
                                 .setEmoji("✂️")
                                 .setLabel(score.scissors.toString())
                                 .setStyle(Discord.ButtonStyle.Secondary)
@@ -167,12 +174,12 @@ async function rpsDaily(client, guildDb, channel, hour) {
                     .setColor(client.config.color)
                     .setAuthor({ name: client.langs("rpsDaily", guildDb.language).title })
                     .setTitle(result)
-                    .setFooter({ text: `${client.langs("rpsDaily", guildDb.language).bot} : ${botEmoji}   •   ${client.langs("rpsDaily", guildDb.language).users} : ${userEmoji}` })
+                    .setFooter({ text: `${client.langs("rpsDaily", guildDb.language).bot} : ${botEmoji}  •  ${client.langs("rpsDaily", guildDb.language).users} : ${userEmoji}` })
             ], components: [
                 new Discord.ActionRowBuilder()
                     .addComponents(
                         new Discord.ButtonBuilder()
-                            .setCustomId('rock')
+                            .setCustomId('rockDaily')
                             .setEmoji("🪨")
                             .setLabel(score.rock.toString())
                             .setStyle(Discord.ButtonStyle.Secondary)
@@ -180,7 +187,7 @@ async function rpsDaily(client, guildDb, channel, hour) {
                     )
                     .addComponents(
                         new Discord.ButtonBuilder()
-                            .setCustomId('paper')
+                            .setCustomId('paperDaily')
                             .setEmoji("📰")
                             .setLabel(score.paper.toString())
                             .setStyle(Discord.ButtonStyle.Secondary)
@@ -188,7 +195,7 @@ async function rpsDaily(client, guildDb, channel, hour) {
                     )
                     .addComponents(
                         new Discord.ButtonBuilder()
-                            .setCustomId('scissors')
+                            .setCustomId('scissorsDaily')
                             .setEmoji("✂️")
                             .setLabel(score.scissors.toString())
                             .setStyle(Discord.ButtonStyle.Secondary)

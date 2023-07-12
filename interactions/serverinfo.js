@@ -16,7 +16,7 @@ module.exports = {
                     .setColor(client.config.color)
                     .setTitle(client.langs("serverinfo", language).server)
                     .setDescription(
-                        `**Owner :** \`${owner.tag}\` (${owner})\n` +
+                        `**Owner :** \`${owner.username}\` (${owner})\n` +
                         `**${client.langs("serverinfo", language).serverName} :** \`${interaction.guild.name}\`\n` +
                         `**ID :** \`${interaction.guild.id}\`\n` +
                         `**${client.langs("serverinfo", language).members} :** \`${interaction.guild.memberCount}\`\n` +

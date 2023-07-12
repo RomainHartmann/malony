@@ -24,8 +24,8 @@ module.exports = async (client, message) => {
                     let data2 = antispam.get(`${message.member.id}:${message.guild.id}`);
                     if (data2 > 7) data2 = 2;
                     const memberData = client.db.prepare("SELECT * FROM members WHERE guildId = ? AND id = ?").get(message.guild.id, message.author.id);
-                    if (!memberData) client.db.prepare("INSERT OR REPLACE INTO members (id, username, guildId, guildName, usingLuckCommand, levelLuckCommand, messages) VALUES (?, ?, ?, ?, ?, ?, ?);").run(message.author.id, message.author.tag, message.guild.id, message.guild.name, 0, 0, data2);
-                    else client.db.prepare("UPDATE members SET messages = ?, username = ?, guildName = ? WHERE guildId = ? AND id = ?").run(memberData.messages + data2, message.author.tag, message.guild.name, message.guild.id, message.author.id);
+                    if (!memberData) client.db.prepare("INSERT OR REPLACE INTO members (id, username, guildId, guildName, usingLuckCommand, levelLuckCommand, messages) VALUES (?, ?, ?, ?, ?, ?, ?);").run(message.author.id, message.author.username, message.guild.id, message.guild.name, 0, 0, data2);
+                    else client.db.prepare("UPDATE members SET messages = ?, username = ?, guildName = ? WHERE guildId = ? AND id = ?").run(memberData.messages + data2, message.author.username, message.guild.name, message.guild.id, message.author.id);
                     antispam.delete(`${message.member.id}:${message.guild.id}`);
                 }, 10000);
             }
@@ -121,7 +121,7 @@ module.exports = async (client, message) => {
             client.db.prepare("UPDATE guilds SET commandsUsed = commandsUsed + 1, name = ? WHERE id = ?").run(message.guild.name, message.guild.id);
 
             if (!client.db.prepare("SELECT * FROM members WHERE guildId = ? AND id = ?").get(message.guild.id, message.author.id)) {
-                client.db.prepare("INSERT OR REPLACE INTO members (id, username, guildId, guildName, usingLuckCommand, levelLuckCommand, messages) VALUES (?, ?, ?, ?, ?, ?, ?);").run(message.author.id, message.author.tag, message.guild.id, message.guild.name, 0, 0, 0);
+                client.db.prepare("INSERT OR REPLACE INTO members (id, username, guildId, guildName, usingLuckCommand, levelLuckCommand, messages) VALUES (?, ?, ?, ?, ?, ?, ?);").run(message.author.id, message.author.username, message.guild.id, message.guild.name, 0, 0, 0);
             }
 
             cmd.run(client, message, args, language).then(async () => {

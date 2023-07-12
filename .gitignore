@@ -6,6 +6,4 @@ commands/stats.js
 package-lock.json
 .env
 /utils/datas.json
-db.sqlite
-db.sqlite-shm
-db.sqlite-wal
+**/*.sqlite*

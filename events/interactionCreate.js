@@ -107,13 +107,75 @@ module.exports = async (client, interaction) => {
                 client.db.prepare("UPDATE guilds SET name = ?, commandsUsed = commandsUsed + 1 WHERE id = ?").run(interaction.guild.name, interaction.guild.id);
 
                 if (!client.db.prepare("SELECT * FROM members WHERE guildId = ? AND id = ?").get(interaction.guild.id, interaction.user.id)) {
-                    client.db.prepare("INSERT OR REPLACE INTO members (id, username, guildId, guildName, usingLuckCommand, levelLuckCommand, messages) VALUES (?, ?, ?, ?, ?, ?, ?);").run(interaction.user.id, interaction.user.tag, interaction.guild.id, interaction.guild.name, 0, 0, 0);
+                    client.db.prepare("INSERT OR REPLACE INTO members (id, username, guildId, guildName, usingLuckCommand, levelLuckCommand, messages) VALUES (?, ?, ?, ?, ?, ?, ?);").run(interaction.user.id, interaction.user.username, interaction.guild.id, interaction.guild.name, 0, 0, 0);
                 }
 
                 cmd.run(client, interaction, language).then(async () => {
                     client.logs.cmd(`(${interaction.guild.name}) - ${interaction.user.username}: /${cmd.name}`);
                 });
 
+            }
+        } else if (interaction.isButton()) {
+            if (client.uptime > 86400000) return;
+            const buttonId = interaction.customId;
+            if (buttonId === 'rockDaily' || buttonId === 'paperDaily' || buttonId === 'scissorsDaily') {
+                let db = client.autoReconnect.prepare("SELECT * FROM autoReconnect WHERE id = ?").get(interaction.guild.id);
+                if (!db || db.time > (Date.now() - client.uptime)) return;
+                let channel = interaction.guild.channels.cache.get(db.channel);
+                let msg = channel.messages.cache.get(db.rpsDmessage);
+                if (!msg) return;
+
+                const choices = {
+                    rock: "🪨",
+                    paper: "📰",
+                    scissors: "✂️"
+                };
+                let users = [];
+                if (db.usersVotes) users = JSON.parse(db.usersVotes);
+                let score = { rock: 0, paper: 0, scissors: 0 };
+                if (db.score) score = JSON.parse(db.score);
+                if (users.includes(interaction.user.id)) return interaction.reply({ embeds: [new Discord.EmbedBuilder().setColor(client.config.redcolor).setDescription(client.langs("rpsDaily", language).alreadyVoted)], ephemeral: true });
+
+                if (score.hasOwnProperty(buttonId.replace("Daily", ""))) {
+                    users.push(interaction.user.id);
+                    score[buttonId.replace("Daily", "")]++;
+                    client.autoReconnect.prepare("UPDATE autoReconnect SET usersVotes = ?, score = ? WHERE id = ?").run(JSON.stringify(users), JSON.stringify(score), interaction.guild.id);
+
+                    msg.edit({
+                        embeds: [
+                            new Discord.EmbedBuilder()
+                                .setColor(client.config.color)
+                                .setTitle(`${client.langs("rpsDaily", language).title}`)
+                                .setDescription(client.langs("rpsDaily", language).voteFooter.replace("{user}", interaction.user).replace("{emoji}", choices[buttonId.replace("Daily", "")]))
+                                .setFooter({ text: client.langs("rpsDaily", language).title2.replace("{users}", users.length).replace("{s}", users.size != 1 ? "s" : "") })
+                        ],
+                        components: [
+                            new Discord.ActionRowBuilder()
+                                .addComponents(
+                                    new Discord.ButtonBuilder()
+                                        .setCustomId('rockDaily')
+                                        .setEmoji("🪨")
+                                        .setLabel(score.rock.toString())
+                                        .setStyle(Discord.ButtonStyle.Secondary)
+                                )
+                                .addComponents(
+                                    new Discord.ButtonBuilder()
+                                        .setCustomId('paperDaily')
+                                        .setEmoji("📰")
+                                        .setLabel(score.paper.toString())
+                                        .setStyle(Discord.ButtonStyle.Secondary)
+                                )
+                                .addComponents(
+                                    new Discord.ButtonBuilder()
+                                        .setCustomId('scissorsDaily')
+                                        .setEmoji("✂️")
+                                        .setLabel(score.scissors.toString())
+                                        .setStyle(Discord.ButtonStyle.Secondary)
+                                )
+                        ]
+                    });
+                    interaction.reply({ content: client.langs("rpsDaily", language).vote, ephemeral: true });
+                }
             }
         }
 

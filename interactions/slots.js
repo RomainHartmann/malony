@@ -26,7 +26,7 @@ module.exports = {
             setTimeout(async function () {
 
                 delete embed.data.thumbnail;
-                embed.setDescription(`${slot1}|${slot2}|${slot3}`).setFooter({ text: `${interaction.user.tag} ${slot1 == slot2 && slot2 == slot3 ? client.langs("utils", language).win : client.langs("utils", language).lose}` });
+                embed.setDescription(`${slot1}|${slot2}|${slot3}`).setFooter({ text: `${interaction.user.username} ${slot1 == slot2 && slot2 == slot3 ? client.langs("utils", language).win : client.langs("utils", language).lose}` });
                 await interaction.editReply({ embeds: [embed] });
 
             }, 1000);

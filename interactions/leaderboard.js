@@ -78,7 +78,7 @@ module.exports = {
                     .setDescription(`${array.filter(r => r.id !== array[0].id).map((r, i) => `${interaction.guild.id == r.guildId ? `**#${i + 2}** <@${r.id}>\n > level \`${r.levelLuckCommand}\` (${r.usingLuckCommand} ${client.langs("utils", language).attempt}${r.usingLuckCommand >= 2 ? "s" : ""})` : `**#${i + 2} ${r.username}** (${client.langs("utils", language).server}: ${r.guildName})\n > level \`${r.levelLuckCommand}\` (${r.usingLuckCommand} ${client.langs("utils", language).attempt}${r.usingLuckCommand >= 2 ? "s" : ""})`}`).join("\n") || "No data"}`)
                     .setAuthor({ name: client.langs("leaderboard", language).titleLuckGlobal })
                     .setThumbnail(client.user.displayAvatarURL())
-                if (ranked > 5) embed.setFooter({ text: `${interaction.user.tag}: ${ranked}/${userData.length}` });
+                if (ranked > 5) embed.setFooter({ text: `${interaction.user.username}: ${ranked}/${userData.length}` });
                 interaction.editReply({ embeds: [embed] });
 
             } else if (interaction.options.getString('filter') == 'guild') {
@@ -110,11 +110,11 @@ module.exports = {
 
                 const embed = new Discord.EmbedBuilder()
                     .setColor(client.config.color)
-                    .setTitle(`🎉 #1 ${interaction.guild.members.cache.get(array[0].id)?.user.tag || "User"}\nlevel ${array[0].levelLuckCommand} (${array[0].usingLuckCommand} ${client.langs("utils", language).attempt}${array[0].usingLuckCommand >= 2 ? "s" : ""})`)
+                    .setTitle(`🎉 #1 ${interaction.guild.members.cache.get(array[0].id)?.user.username || "User"}\nlevel ${array[0].levelLuckCommand} (${array[0].usingLuckCommand} ${client.langs("utils", language).attempt}${array[0].usingLuckCommand >= 2 ? "s" : ""})`)
                     .setDescription(`${array.filter(r => r.id !== array[0].id).map((r, i) => `${interaction.guild.id == r.guildId ? `**#${i + 2}** <@${r.id}>\n > level \`${r.levelLuckCommand}\` (${r.usingLuckCommand} ${client.langs("utils", language).attempt}${r.usingLuckCommand >= 2 ? "s" : ""})` : `**#${i + 2} <@${r.id}>**\n > level \`${r.levelLuckCommand}\` (${r.usingLuckCommand} ${client.langs("utils", language).attempt}${r.usingLuckCommand >= 2 ? "s" : ""})`}`).join("\n") || "No data"}`)
                     .setAuthor({ name: client.langs("leaderboard", language).titleLuckGuild })
                     .setThumbnail(client.user.displayAvatarURL())
-                if (ranked > 5) embed.setFooter({ text: `${interaction.user.tag}: ${ranked}/${interaction.guild.memberCount}` });
+                if (ranked > 5) embed.setFooter({ text: `${interaction.user.username}: ${ranked}/${interaction.guild.memberCount}` });
                 interaction.editReply({ embeds: [embed] });
 
             }
@@ -159,11 +159,11 @@ module.exports = {
 
             const embed = new Discord.EmbedBuilder()
                 .setColor(client.config.color)
-                .setTitle(`🎉 #1 ${interaction.guild.members.cache.get(array[0].id)?.user.tag || "User"} - ${array[0].messages} message${array[0].messages >= 2 ? "s" : ""} `)
+                .setTitle(`🎉 #1 ${interaction.guild.members.cache.get(array[0].id)?.user.username || "User"} - ${array[0].messages} message${array[0].messages >= 2 ? "s" : ""} `)
                 .setDescription(`${array.filter(r => r.id !== array[0].id).map((r, i) => `${interaction.guild.id == r.guildId ? `**#${i + 2}** <@${r.id}>\n > \`${r.messages}\` message${r.messages >= 2 ? "s" : ""}` : `**#${i + 2} <@${r.id}>**\n > \`${r.messages}\` message${r.messages >= 2 ? "s" : ""}`}`).join("\n") || "No data"} `)
                 .setAuthor({ name: client.langs("leaderboard", language).titleLevels })
                 .setThumbnail(client.user.displayAvatarURL())
-            if (ranked > 7) embed.setFooter({ text: `${interaction.user.tag}: ${ranked}/${interaction.guild.memberCount}` });
+            if (ranked > 7) embed.setFooter({ text: `${interaction.user.username}: ${ranked}/${interaction.guild.memberCount}` });
             interaction.editReply({ embeds: [embed] });
 
         }
