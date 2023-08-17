@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const { hour } = require('../interactions/rpsdaily');
 module.exports = async (client, interaction) => {
     let language = client.config.defaultLanguage;
     try {
@@ -28,6 +29,7 @@ module.exports = async (client, interaction) => {
             }
             if (cmd) {
 
+                if (!interaction.guild.members.me.permissionsIn(interaction.channel).has(Discord.PermissionsBitField.Flags.EmbedLinks)) return interaction.reply(client.langs("permissions", language).bot.replace("{perm}", "embed links")).catch(() => { });
                 if (!interaction.guild.members.me.permissionsIn(interaction.channel).has(Discord.PermissionsBitField.Flags.UseExternalEmojis)) return interaction.reply(client.langs("permissions", language).bot.replace("{perm}", "use external emojis")).catch(() => { });
 
                 let guildData = client.db.prepare("SELECT * FROM guilds WHERE id = ?").get(interaction.guild.id);
@@ -116,13 +118,11 @@ module.exports = async (client, interaction) => {
 
             }
         } else if (interaction.isButton()) {
-            if (client.uptime > 86400000) return;
             const buttonId = interaction.customId;
             if (buttonId === 'rockDaily' || buttonId === 'paperDaily' || buttonId === 'scissorsDaily') {
                 let db = client.autoReconnect.prepare("SELECT * FROM autoReconnect WHERE id = ?").get(interaction.guild.id);
-                if (!db || db.time > (Date.now() - client.uptime)) return;
                 let channel = interaction.guild.channels.cache.get(db.channel);
-                let msg = channel.messages.cache.get(db.rpsDmessage);
+                let msg = await channel.messages.cache.get(db.message);
                 if (!msg) return;
 
                 const choices = {
@@ -134,7 +134,87 @@ module.exports = async (client, interaction) => {
                 if (db.usersVotes) users = JSON.parse(db.usersVotes);
                 let score = { rock: 0, paper: 0, scissors: 0 };
                 if (db.score) score = JSON.parse(db.score);
-                if (users.includes(interaction.user.id)) return interaction.reply({ embeds: [new Discord.EmbedBuilder().setColor(client.config.redcolor).setDescription(client.langs("rpsDaily", language).alreadyVoted)], ephemeral: true });
+
+                if (!client.collRps.has(interaction.guild.id)) {
+                    let Time = await client.utils.dailyInterval(client, hour, true);
+                    const filter = i => i.message.id == msg.id && !i.user.bot;
+                    const collector = interaction.channel.createMessageComponentCollector({
+                        componentType: Discord.ComponentType.Button,
+                        time: Time,
+                        filter
+                    });
+                    client.collRps.set(interaction.guild.id, collector);
+                    collector.on('end', async (collected, reason) => {
+                        if (reason !== "time") return;
+                        guildDb = client.db.prepare("SELECT * FROM guilds WHERE id = ?").get(interaction.guild.id);
+
+                        const keys = Object.keys(choices);
+                        const botEmoji = choices[keys[Math.floor(Math.random() * keys.length)]];
+                        let userChoiceId = Object.keys(score).reduce((a, b) => score[a] > score[b] ? a : b);
+                        let userEmoji = choices[userChoiceId];
+                        let result;
+
+                        let lrBot = guildDb.rpsLeaderboardBot;
+                        let lrUser = guildDb.rpsLeaderboardUser;
+
+                        switch (true) {
+                            case (botEmoji == "🪨" && userEmoji == "✂️") ||
+                                (botEmoji == "✂️" && userEmoji == "📰") ||
+                                (botEmoji == "📰" && userEmoji == "🪨"):
+                                result = client.langs("rpsDaily", guildDb.language).botWon.replace("{emoji}", botEmoji).replace("{users}", collected.size).replace("{s}", collected.size != 1 ? "s" : "");
+                                lrBot++;
+                                break;
+                            case botEmoji == userEmoji:
+                                result = client.langs("rpsDaily", guildDb.language).draw.replace("{emoji}", botEmoji);
+                                break;
+                            default:
+                                result = client.langs("rpsDaily", guildDb.language).usersWon.replace("{emoji}", userEmoji).replace("{votes}", collected.size).replace("{s}", collected.size != 1 ? "s" : "");
+                                lrUser++;
+                        }
+
+                        if (lrBot != guildDb.rpsLeaderboardBot) client.db.prepare("UPDATE guilds SET rpsLeaderboardBot = ? WHERE id = ?").run(lrBot, guildDb.id);
+                        else if (lrUser != guildDb.rpsLeaderboardUser) client.db.prepare("UPDATE guilds SET rpsLeaderboardUser = ? WHERE id = ?").run(lrUser, guildDb.id);
+
+                        await msg.edit({
+                            content: `${client.langs("rpsDaily", guildDb.language).botWins}: ${lrBot} | ${client.langs("rpsDaily", guildDb.language).usersWins}: ${lrUser}`,
+                            embeds: [
+                                new Discord.EmbedBuilder()
+                                    .setColor(client.config.color)
+                                    .setAuthor({ name: client.langs("rpsDaily", guildDb.language).title })
+                                    .setTitle(result)
+                                    .setFooter({ text: `${client.langs("rpsDaily", guildDb.language).bot} : ${botEmoji}  •  ${client.langs("rpsDaily", guildDb.language).users} : ${userEmoji}` })
+                            ], components: [
+                                new Discord.ActionRowBuilder()
+                                    .addComponents(
+                                        new Discord.ButtonBuilder()
+                                            .setCustomId('rockDaily')
+                                            .setEmoji("🪨")
+                                            .setLabel(score.rock.toString())
+                                            .setStyle(Discord.ButtonStyle.Secondary)
+                                            .setDisabled()
+                                    )
+                                    .addComponents(
+                                        new Discord.ButtonBuilder()
+                                            .setCustomId('paperDaily')
+                                            .setEmoji("📰")
+                                            .setLabel(score.paper.toString())
+                                            .setStyle(Discord.ButtonStyle.Secondary)
+                                            .setDisabled()
+                                    )
+                                    .addComponents(
+                                        new Discord.ButtonBuilder()
+                                            .setCustomId('scissorsDaily')
+                                            .setEmoji("✂️")
+                                            .setLabel(score.scissors.toString())
+                                            .setStyle(Discord.ButtonStyle.Secondary)
+                                            .setDisabled()
+                                    )
+                            ]
+                        }).catch(() => { });
+                    });
+                }
+
+                if (users.includes(interaction.user.id)) return interaction.reply({ embeds: [new Discord.EmbedBuilder().setColor(client.config.redcolor).setDescription(client.langs("rpsDaily", language).alreadyVoted)], ephemeral: true }).catch(() => { });
 
                 if (score.hasOwnProperty(buttonId.replace("Daily", ""))) {
                     users.push(interaction.user.id);
@@ -147,7 +227,7 @@ module.exports = async (client, interaction) => {
                                 .setColor(client.config.color)
                                 .setTitle(`${client.langs("rpsDaily", language).title}`)
                                 .setDescription(client.langs("rpsDaily", language).voteFooter.replace("{user}", interaction.user).replace("{emoji}", choices[buttonId.replace("Daily", "")]))
-                                .setFooter({ text: client.langs("rpsDaily", language).title2.replace("{users}", users.length).replace("{s}", users.size != 1 ? "s" : "") })
+                                .setFooter({ text: client.langs("rpsDaily", language).title2.replace("{users}", users.length).replace("{s}", users.length != 1 ? "s" : "") })
                         ],
                         components: [
                             new Discord.ActionRowBuilder()
@@ -174,7 +254,7 @@ module.exports = async (client, interaction) => {
                                 )
                         ]
                     });
-                    interaction.reply({ content: client.langs("rpsDaily", language).vote, ephemeral: true });
+                    interaction.reply({ content: client.langs("rpsDaily", language).vote, ephemeral: true }).catch(() => { });
                 }
             }
         }

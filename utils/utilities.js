@@ -10,7 +10,7 @@ async function dailyInterval(client, hour, returnNext = false) {
     if (returnNext) return inT;
 
     setTimeout(function atHour() {
-        const guilds = client.db.prepare("SELECT * FROM guilds WHERE rpsDaily IS NOT NULL;").all();
+        guilds = client.db.prepare("SELECT * FROM guilds WHERE rpsDaily IS NOT NULL;").all();
         guilds.filter((r) => r.rpsDaily).map(async (r, i) => {
             const channel = client.channels.cache.get(r?.rpsDaily);
             if (channel) rpsDaily(client, r, channel, hour);
@@ -37,7 +37,6 @@ async function rpsDaily(client, guildDb, channel, hour) {
         paper: 0,
         scissors: 0
     };
-    let voted = new Set();
     let role = null;
 
     if (guildDb?.rpsPing) role = client.guilds.cache.get(guildDb.id)?.roles.cache.get(guildDb?.rpsPing)
@@ -73,71 +72,11 @@ async function rpsDaily(client, guildDb, channel, hour) {
                         .setStyle(Discord.ButtonStyle.Secondary)
                 )
         ]
-    });
+    }).catch(() => { });
 
-    // set autoconnect, if the bot goes down
-    client.autoReconnect.prepare("INSERT OR REPLACE INTO autoReconnect (id, time, channel, rpsDmessage, score, usersVotes) VALUES (?, ?, ?, ?, ?, ?);").run(guildDb.id, Date.now(), channel.id, message.id, JSON.stringify(score), null);
-    // TODO: reset autoconnect when the system is disabled
-    let Time = await dailyInterval(client, hour, true);
+    client.autoReconnect.prepare("INSERT OR REPLACE INTO autoReconnect (id, time, channel, message, score, usersVotes) VALUES (?, ?, ?, ?, ?, ?);").run(guildDb.id, Date.now(), channel.id, message.id, JSON.stringify(score), null);
 
-    const filter = i => i.message.id == message.id && !i.user.bot;
-    const collector = channel.createMessageComponentCollector({
-        componentType: Discord.ComponentType.Button,
-        time: Time,
-        filter
-    });
-
-    collector.on('collect', b => {
-
-        if (voted.has(b.user.id)) return b.reply({ embeds: [new Discord.EmbedBuilder().setColor(client.config.redcolor).setDescription(client.langs("rpsDaily", guildDb.language).alreadyVoted)], ephemeral: true });
-        let choice = b.customId;
-
-        /* Le code ci-dessus vérifie si l'objet "score" a une propriété nommée "choice". */
-        if (score.hasOwnProperty(choice.replace("Daily", ""))) {
-            voted.add(b.user.id);
-            score[choice.replace("Daily", "")]++;
-            client.autoReconnect.prepare("UPDATE autoReconnect SET usersVotes = ?, score = ? WHERE id = ?").run(JSON.stringify(Array.from(voted)), JSON.stringify(score), guildDb.id);
-
-            message.edit({
-                embeds: [
-                    new Discord.EmbedBuilder()
-                        .setColor(client.config.color)
-                        .setTitle(`${client.langs("rpsDaily", guildDb.language).title}`)
-                        .setDescription(client.langs("rpsDaily", guildDb.language).voteFooter.replace("{user}", b.user).replace("{emoji}", choices[b.customId.replace("Daily", "")]))
-                        .setFooter({ text: client.langs("rpsDaily", guildDb.language).title2.replace("{users}", voted.size).replace("{s}", voted.size != 1 ? "s" : "") })
-                ],
-                components: [
-                    new Discord.ActionRowBuilder()
-                        .addComponents(
-                            new Discord.ButtonBuilder()
-                                .setCustomId('rockDaily')
-                                .setEmoji("🪨")
-                                .setLabel(score.rock.toString())
-                                .setStyle(Discord.ButtonStyle.Secondary)
-                        )
-                        .addComponents(
-                            new Discord.ButtonBuilder()
-                                .setCustomId('paperDaily')
-                                .setEmoji("📰")
-                                .setLabel(score.paper.toString())
-                                .setStyle(Discord.ButtonStyle.Secondary)
-                        )
-                        .addComponents(
-                            new Discord.ButtonBuilder()
-                                .setCustomId('scissorsDaily')
-                                .setEmoji("✂️")
-                                .setLabel(score.scissors.toString())
-                                .setStyle(Discord.ButtonStyle.Secondary)
-                        )
-                ]
-            });
-            b.reply({ content: client.langs("rpsDaily", guildDb.language).vote, ephemeral: true });
-        }
-
-    });
-
-    collector.on('end', async (collected, reason) => {
-        if (reason !== "time") return;
+    setTimeout(async () => {
         guildDb = client.db.prepare("SELECT * FROM guilds WHERE id = ?").get(guildDb.id);
 
         const keys = Object.keys(choices);
@@ -203,7 +142,7 @@ async function rpsDaily(client, guildDb, channel, hour) {
                     )
             ]
         }).catch(() => { });
-    });
+    }, await dailyInterval(client, hour, true));
 }
 
 async function playLogo(mode, client, language, thread, interaction, message, round = 0, rounds = 1, logos = [], leaderboard = []) {
@@ -234,7 +173,7 @@ async function playLogo(mode, client, language, thread, interaction, message, ro
                                 .setColor(client.config.redcolor)
                                 .setDescription(client.langs("guessLogo", language).close)
                         ]
-                    });
+                    }).catch(() => { });
                 }
             });
             collector.on('end', async collected => {
@@ -255,7 +194,7 @@ async function playLogo(mode, client, language, thread, interaction, message, ro
                                 .setColor(client.config.greencolor)
                                 .setDescription(client.langs("guessLogo", language).win.replace("{user}", msg3.author))
                         ]
-                    });
+                    }).catch(() => { });
                 }
                 else {
                     msg2 = await thread.send({

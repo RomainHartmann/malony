@@ -29,6 +29,7 @@ client.data = {
 };
 client.subscriptions = [];
 client.intervalId = null;
+client.collRps = new Discord.Collection();
 
 client.setMaxListeners(25);
 require('events').defaultMaxListeners = 25;
@@ -65,7 +66,7 @@ client.db = sql;
 const autoReconnectTable = autoReconnect.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'autoReconnect';").get();
 if (!autoReconnectTable['count(*)']) {
     client.logs.db("Creating autoReconnect table");
-    autoReconnect.prepare("CREATE TABLE autoReconnect (id TEXT PRIMARY KEY, time INTEGER, channel TEXT, rpsDmessage TEXT, score TEXT, usersVotes TEXT);").run();
+    autoReconnect.prepare("CREATE TABLE autoReconnect (id TEXT PRIMARY KEY, time INTEGER, channel TEXT, message TEXT, score TEXT, usersVotes TEXT);").run();
     autoReconnect.prepare("CREATE UNIQUE INDEX idx_autoReconnect_id ON autoReconnect (id);").run();
     autoReconnect.pragma("synchronous = 1");
     autoReconnect.pragma("journal_mode = wal");

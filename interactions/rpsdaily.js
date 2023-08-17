@@ -6,6 +6,7 @@ module.exports = {
     category: 'Setup',
     cooldown: 10,
     hour: hour,
+    botPermissions: [{ name: "Send Messages", perm: Discord.PermissionsBitField.Flags.SendMessages }, { name: "View Channel", perm: Discord.PermissionsBitField.Flags.ViewChannel }],
     memberPermissions: [{ name: "Manage Messages", perm: Discord.PermissionsBitField.Flags.ManageMessages }],
     options: [
         {

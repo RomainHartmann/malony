@@ -1,4 +1,14 @@
-# Bot Discord Malony (certifié)
+<p align="center">
+    <img src="assets/logo.png" width="20%" alt="logo" style="border-radius: 50%;">
+</p>
+
+<h1 align="center">Malony</h1>
+
+<p align="center">
+    Un bot discord.js certifié et soigné avec plusieurs commandes de jeux ou de modération
+</p>
+
+<br/>
 
 Bienvenue sur la page GitHub du projet open source Malony.
 

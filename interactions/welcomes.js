@@ -3,7 +3,7 @@ module.exports = {
     name: 'welcomes',
     description: 'Set up or edit welcome channel',
     category: 'Setup',
-    botPermissions: [{ name: "Manage Channels", perm: Discord.PermissionsBitField.Flags.ManageChannels }],
+    botPermissions: [{ name: "Send Messages", perm: Discord.PermissionsBitField.Flags.SendMessages }, { name: "View Channel", perm: Discord.PermissionsBitField.Flags.ViewChannel }],
     memberPermissions: [{ name: "Manage Channels", perm: Discord.PermissionsBitField.Flags.ManageChannels }],
     options: [
         {
