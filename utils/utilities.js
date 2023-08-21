@@ -78,12 +78,18 @@ async function rpsDaily(client, guildDb, channel, hour) {
 
     setTimeout(async () => {
         guildDb = client.db.prepare("SELECT * FROM guilds WHERE id = ?").get(guildDb.id);
+        let db = client.autoReconnect.prepare("SELECT * FROM autoReconnect WHERE id = ?").get(guildDb.id);
+
+        let result;
+        let users = [];
+        if (db.usersVotes) users = JSON.parse(db.usersVotes);
+        let score = { rock: 0, paper: 0, scissors: 0 };
+        if (db.score) score = JSON.parse(db.score);
 
         const keys = Object.keys(choices);
+        const userChoiceId = Object.keys(score).reduce((a, b) => score[a] > score[b] ? a : b);
         const botEmoji = choices[keys[Math.floor(Math.random() * keys.length)]];
-        let userChoiceId = Object.keys(score).reduce((a, b) => score[a] > score[b] ? a : b);
-        let userEmoji = choices[userChoiceId];
-        let result;
+        const userEmoji = choices[userChoiceId];
 
         let lrBot = guildDb.rpsLeaderboardBot;
         let lrUser = guildDb.rpsLeaderboardUser;
@@ -92,14 +98,14 @@ async function rpsDaily(client, guildDb, channel, hour) {
             case (botEmoji == "🪨" && userEmoji == "✂️") ||
                 (botEmoji == "✂️" && userEmoji == "📰") ||
                 (botEmoji == "📰" && userEmoji == "🪨"):
-                result = client.langs("rpsDaily", guildDb.language).botWon.replace("{emoji}", botEmoji).replace("{users}", collected.size).replace("{s}", collected.size != 1 ? "s" : "");
+                result = client.langs("rpsDaily", guildDb.language).botWon.replace("{emoji}", botEmoji).replace("{users}", users.length).replace("{s}", users.length != 1 ? "s" : "");
                 lrBot++;
                 break;
             case botEmoji == userEmoji:
                 result = client.langs("rpsDaily", guildDb.language).draw.replace("{emoji}", botEmoji);
                 break;
             default:
-                result = client.langs("rpsDaily", guildDb.language).usersWon.replace("{emoji}", userEmoji).replace("{votes}", collected.size).replace("{s}", collected.size != 1 ? "s" : "");
+                result = client.langs("rpsDaily", guildDb.language).usersWon.replace("{emoji}", userEmoji).replace("{votes}", users.length).replace("{s}", users.length != 1 ? "s" : "");
                 lrUser++;
         }
 
@@ -146,7 +152,7 @@ async function rpsDaily(client, guildDb, channel, hour) {
 }
 
 async function playLogo(mode, client, language, thread, interaction, message, round = 0, rounds = 1, logos = [], leaderboard = []) {
-    const data = require("../utils/sites.json");
+    const data = require("../utils/logos.json");
     const brand = data[Math.floor(Math.random() * data.length)];
     for (let key in brand) {
         if (brand.hasOwnProperty(key)) {
