@@ -5,25 +5,25 @@
 <h1 align="center">Malony</h1>
 
 <p align="center">
-    Un bot discord.js certifié et soigné avec plusieurs commandes de jeux ou de modération
+    A neat, certified discord.js bot with several game and moderation controls
 </p>
 
 <br/>
 
-Bienvenue sur la page GitHub du projet open source Malony.
+Welcome to the GitHub page of the Malony open source project.
 
-C'est un projet qui me tient à cœur, que j'ai construit avec beaucoup de temps et de passion. Après une longue réflexion, j'ai décidé de le rendre open source. Mon objectif est de contribuer à la communauté de développeurs en partageant mon travail, j'espère que vous trouverez ce projet utile.
+This is a project close to my heart, which I've spent a lot of time and passion building. After much thought, I've decided to make it open source. My aim is to contribute to the developer community by sharing my work, and I hope you'll find it useful.
 
-**N'ésitez pas à [ajouter](https://discord.com/oauth2/authorize?client_id=956950572454514718&scope=bot&permissions=69005043736) le bot Discord sur votre serveur pour me soutenir!**
+**You can [add](https://discord.com/oauth2/authorize?client_id=956950572454514718&scope=bot&permissions=69005043736) the discord bot to your server!**
 
-# Licence
+# License
 
-Ce projet est sous [licence](https://github.com/RomainHartmann/Malony/blob/main/LICENSE).
+This project is [licensed](https://github.com/RomainHartmann/Malony/blob/main/LICENSE).
 
 # Contribution
 
-Si vous avez des suggestions ou des corrections, n'hésitez pas à faire un pull request.
+If you have any suggestions or corrections, please don't hesitate to make a pull request.
 
 # Support
 
-Si vous rencontrez des problèmes avec le bot ou si vous avez des questions, je suis là.
+If you encounter any problems with the bot or have any questions, I'm here.
