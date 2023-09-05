@@ -29,7 +29,6 @@ client.data = {
 };
 client.subscriptions = [];
 client.intervalId = null;
-client.collRps = new Discord.Collection();
 
 client.setMaxListeners(25);
 require('events').defaultMaxListeners = 25;

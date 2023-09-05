@@ -13,10 +13,10 @@ module.exports = async (client) => {
 
     client.utils.dailyInterval(client, hour);
 
-    const guilds = client.db.prepare("SELECT * FROM guilds WHERE yn_ytChannel IS NOT NULL").all();
-    if (guilds.toString()) {
-        client.logs.action(`YT Notifier - Subscribing to ${guilds.length} channel${guilds.length !== 1 ? "s" : ""}`);
-        client.notifier.subscribe(client, client.utils.removeDuplicates(guilds.map((r) => r.yn_ytChannel)));
+    const guildsYt = client.db.prepare("SELECT * FROM guilds WHERE yn_ytChannel IS NOT NULL").all();
+    if (guildsYt.toString()) {
+        client.logs.action(`YT Notifier - Subscribing to ${guildsYt.length} channel${guildsYt.length !== 1 ? "s" : ""}`);
+        client.notifier.subscribe(client, client.utils.removeDuplicates(guildsYt.map((r) => r.yn_ytChannel)));
         client.notifier.start(client);
     } else client.logs.action(`YT Notifier - No channel to subscribe`);
 

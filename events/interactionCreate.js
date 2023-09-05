@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const { hour } = require('../interactions/rpsdaily');
 module.exports = async (client, interaction) => {
     let language = client.config.defaultLanguage;
     try {
@@ -120,10 +119,13 @@ module.exports = async (client, interaction) => {
         } else if (interaction.isButton()) {
             const buttonId = interaction.customId;
             if (buttonId === 'rockDaily' || buttonId === 'paperDaily' || buttonId === 'scissorsDaily') {
-                let db = client.autoReconnect.prepare("SELECT * FROM autoReconnect WHERE id = ?").get(interaction.guild.id);
-                let channel = interaction.guild.channels.cache.get(db.channel);
-                let msg = await channel.messages.cache.get(db.message);
-                if (!msg) return;
+                const db = client.autoReconnect.prepare("SELECT * FROM autoReconnect WHERE id = ?").get(interaction.guild.id);
+                if (!db || interaction.message.id != db.message) {
+                    interaction.reply({ embeds: [new Discord.EmbedBuilder().setColor(client.config.redcolor).setDescription(client.langs("rpsDaily", language).wrongMessage)], ephemeral: true }).catch(() => { });
+                    return await interaction.channel.messages.cache.get(interaction.message.id).delete().catch(() => { });
+                }
+                let msg = await interaction.channel.messages.cache.get(db.message);
+                if (!msg) return console.log("sw");
 
                 const choices = {
                     rock: "🪨",

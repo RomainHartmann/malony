@@ -65,6 +65,7 @@ module.exports = {
                 if (guildDb?.rpsPing) client.db.prepare("UPDATE guilds SET rpsPing = ? WHERE id = ?").run(null, interaction.guild.id);
                 if (guildDb?.rpsLeaderboardUser && guildDb?.rpsLeaderboardUser != 0) client.db.prepare("UPDATE guilds SET rpsLeaderboardUser = ? WHERE id = ?").run(0, interaction.guild.id);
                 if (guildDb?.rpsLeaderboardBot && guildDb?.rpsLeaderboardBot != 0) client.db.prepare("UPDATE guilds SET rpsLeaderboardBot = ? WHERE id = ?").run(0, interaction.guild.id);
+                client.autoReconnect.prepare("DELETE FROM autoReconnect WHERE id = ?").run(interaction.guild.id);
 
                 client.db.prepare("UPDATE guilds SET rpsDaily = ? WHERE id = ?").run(null, interaction.guild.id);
                 return interaction.editReply({

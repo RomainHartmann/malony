@@ -313,7 +313,8 @@
             "botWins": "Bot Wins",
             "usersWins": "Users Wins",
             "voteFooter": "{user} just voted for {emoji}",
-            "alreadyVoted": "You already voted today, come back tomorrow!"
+            "alreadyVoted": "You already voted today, come back tomorrow!",
+            "wrongMessage": "I can't do anything with this message!"
         },
         "fr": {
             "title": "Pierre Feuille Ciseaux Quotidien",
@@ -328,7 +329,8 @@
             "botWins": "Victoires du bot",
             "usersWins": "Victoires des utilisateurs",
             "voteFooter": "{user} vient de voter pour {emoji}",
-            "alreadyVoted": "Tu as déjà voté aujourd'hui, reviens demain !"
+            "alreadyVoted": "Tu as déjà voté aujourd'hui, reviens demain !",
+            "wrongMessage": "Je ne peux rien faire avec ce message !"
         }
     },
     "serverinfo": {
