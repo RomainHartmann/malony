@@ -146,11 +146,13 @@
     "clear": {
         "en": {
             "message": "I deleted {number} message{s}",
-            "information": "I can only bulk delete messages that are under 14 days old!"
+            "information": "I can only bulk delete messages that are under 14 days old!",
+            "error": "I couldn't delete the messages!"
         },
         "fr": {
             "message": "J'ai supprimé {number} message{s}",
-            "information": "Je ne peux supprimer que les messages datant de moins de 14 jours !"
+            "information": "Je ne peux supprimer que les messages datant de moins de 14 jours !",
+            "error": "Je n'ai pas pu effacer les messages !"
         }
     },
     "first": {

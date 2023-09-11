@@ -32,6 +32,14 @@ module.exports = {
                         .setDescription(`${client.langs("clear", language).message.replace("{number}", r.size).replace("{s}", r.size !== 1 ? "s" : "")}${r.size !== number ? `, ${client.langs("clear", language).information.toLowerCase()}` : ""}`)
                 ]
             });
+        }).catch(() => {
+            interaction.editReply({
+                embeds: [
+                    new Discord.EmbedBuilder()
+                        .setColor(client.config.redcolor)
+                        .setDescription(client.langs("clear", language).error)
+                ]
+            });
         });
 
     }
