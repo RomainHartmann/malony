@@ -49,7 +49,7 @@ module.exports = {
                 embeds: [
                     new Discord.EmbedBuilder()
                         .setColor("Grey")
-                        .setAuthor({ name: client.langs("luck", language).title })
+                        .setAuthor({ name: `${client.langs("luck", language).title} ❄️` })
                         .setDescription((level >= 3 ? client.langs("luck", language).description2 : client.langs("luck", language).description).replace("{number1}", number1).replace("{number2}", number2).replace("{role}", all[level]?.role.name || all[0].role.name))
                 ]
             });
