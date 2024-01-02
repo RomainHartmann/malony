@@ -2,7 +2,7 @@
     <img src="assets/logo.png" width="20%" alt="logo" style="border-radius: 50%;">
 </p>
 
-<h1 align="center">Malony</h1>
+<h1 align="center">Malony (Online since 2021)</h1>
 
 <p align="center">
     A neat, certified discord.js bot with several game and moderation controls
