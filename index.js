@@ -4,8 +4,6 @@ const SQLite = require("better-sqlite3");
 const sql = new SQLite('./utils/db/db.sqlite');
 const autoReconnect = new SQLite("./utils/db/autoReconnect.sqlite");
 const file = require('./utils/languages.json');
-const express = require('express');
-const app = express();
 
 const client = new Discord.Client({
     fetchAllMembers: true,
@@ -84,8 +82,3 @@ client.langs = (textId, lang) => {
 
 require('dotenv').config();
 client.login(process.env.TOKEN);
-
-app.get('/', function (req, res) {
-    res.send('OK');
-});
-app.listen(5000);
