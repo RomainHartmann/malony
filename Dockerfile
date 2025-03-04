@@ -1,11 +1,15 @@
 FROM node:22.14.0-alpine
-
 WORKDIR /app
 
-COPY package*.json ./
+RUN chown -R node:node /app
+USER node
 
-RUN npm ci --omit=dev
+ARG NODE_ENV=production
+ENV NODE_ENV=$NODE_ENV
 
-COPY . .
+COPY --chown=node:node package*.json ./
+RUN npm ci --omit=dev && npm cache clean --force
+
+COPY --chown=node:node . .
 
 CMD [ "node", "." ]
