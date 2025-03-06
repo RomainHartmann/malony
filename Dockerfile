@@ -5,7 +5,7 @@ RUN chown -R node:node /app
 USER node
 
 COPY --chown=node:node package*.json ./
-RUN npm ci --omit=dev && npm cache clean --force
+RUN npm i --omit=dev && npm cache clean --force
 
 COPY --chown=node:node . .
 
