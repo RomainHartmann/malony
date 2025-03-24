@@ -7,6 +7,7 @@ COPY --chown=node:node . .
 RUN npm i --omit=dev && npm cache clean --force
 
 RUN chown -R node:node /app
+RUN apk add --no-cache tzdata
 USER node
 
 CMD ["node", "."]
