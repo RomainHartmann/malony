@@ -54,43 +54,45 @@ async function dailyInterval(client, hour, returnNext = false) {
                 if (lrBot != r.rpsLeaderboardBot) client.db.prepare("UPDATE guilds SET rpsLeaderboardBot = ? WHERE id = ?").run(lrBot, r.id);
                 else if (lrUser != r.rpsLeaderboardUser) client.db.prepare("UPDATE guilds SET rpsLeaderboardUser = ? WHERE id = ?").run(lrUser, r.id);
 
-                const msg = await channel.messages.fetch(db.message);
-                if (msg) msg.edit({
-                    content: `${client.langs("rpsDaily", r.language).botWins}: ${lrBot} | ${client.langs("rpsDaily", r.language).usersWins}: ${lrUser}`,
-                    embeds: [
-                        new Discord.EmbedBuilder()
-                            .setColor(client.config.color)
-                            .setAuthor({ name: client.langs("rpsDaily", r.language).title })
-                            .setTitle(result)
-                            .setFooter({ text: `${client.langs("rpsDaily", r.language).bot} : ${botEmoji}  •  ${client.langs("rpsDaily", r.language).users} : ${userEmoji}` })
-                    ], components: [
-                        new Discord.ActionRowBuilder()
-                            .addComponents(
-                                new Discord.ButtonBuilder()
-                                    .setCustomId('rockDaily')
-                                    .setEmoji("🪨")
-                                    .setLabel(score.rock.toString())
-                                    .setStyle(Discord.ButtonStyle.Secondary)
-                                    .setDisabled()
-                            )
-                            .addComponents(
-                                new Discord.ButtonBuilder()
-                                    .setCustomId('paperDaily')
-                                    .setEmoji("📰")
-                                    .setLabel(score.paper.toString())
-                                    .setStyle(Discord.ButtonStyle.Secondary)
-                                    .setDisabled()
-                            )
-                            .addComponents(
-                                new Discord.ButtonBuilder()
-                                    .setCustomId('scissorsDaily')
-                                    .setEmoji("✂️")
-                                    .setLabel(score.scissors.toString())
-                                    .setStyle(Discord.ButtonStyle.Secondary)
-                                    .setDisabled()
-                            )
-                    ]
-                }).catch(() => { });
+                try {
+                    const msg = await channel.messages.fetch(db.message);
+                    if (msg) msg.edit({
+                        content: `${client.langs("rpsDaily", r.language).botWins}: ${lrBot} | ${client.langs("rpsDaily", r.language).usersWins}: ${lrUser}`,
+                        embeds: [
+                            new Discord.EmbedBuilder()
+                                .setColor(client.config.color)
+                                .setAuthor({ name: client.langs("rpsDaily", r.language).title })
+                                .setTitle(result)
+                                .setFooter({ text: `${client.langs("rpsDaily", r.language).bot} : ${botEmoji}  •  ${client.langs("rpsDaily", r.language).users} : ${userEmoji}` })
+                        ], components: [
+                            new Discord.ActionRowBuilder()
+                                .addComponents(
+                                    new Discord.ButtonBuilder()
+                                        .setCustomId('rockDaily')
+                                        .setEmoji("🪨")
+                                        .setLabel(score.rock.toString())
+                                        .setStyle(Discord.ButtonStyle.Secondary)
+                                        .setDisabled()
+                                )
+                                .addComponents(
+                                    new Discord.ButtonBuilder()
+                                        .setCustomId('paperDaily')
+                                        .setEmoji("📰")
+                                        .setLabel(score.paper.toString())
+                                        .setStyle(Discord.ButtonStyle.Secondary)
+                                        .setDisabled()
+                                )
+                                .addComponents(
+                                    new Discord.ButtonBuilder()
+                                        .setCustomId('scissorsDaily')
+                                        .setEmoji("✂️")
+                                        .setLabel(score.scissors.toString())
+                                        .setStyle(Discord.ButtonStyle.Secondary)
+                                        .setDisabled()
+                                )
+                        ]
+                    }).catch(() => { });
+                } catch (e) { }
                 rpsDaily(client, r, channel, hour); // new day
             }
             else return client.db.prepare("UPDATE guilds SET rpsDaily = ? WHERE id = ?").run(null, r.id);
