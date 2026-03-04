@@ -19,7 +19,7 @@ module.exports = {
                         { name: `${client.langs("stats", language).commands} :`, value: client.application.commands.cache.size.toString(), inline: true },
                         { name: 'node.js :', value: process.version, inline: true },
                         { name: 'discord.js :', value: package.dependencies["discord.js"].replace("^", ""), inline: true },
-                        { name: 'Uptime :', value: client.utils.duration(client, language, client.uptime), inline: true }
+                        { name: 'Uptime :', value: client.utils.duration(client, language, process.uptime() * 1000), inline: true }
                     )
             ]
         });
