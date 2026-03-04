@@ -42,14 +42,14 @@ if (!guildsTable['count(*)']) {
     client.logs.db("Creating guilds table");
     sql.prepare("CREATE TABLE guilds (id TEXT PRIMARY KEY, name TEXT, language TEXT, commandsUsed INTEGER, tempchannel TEXT, levels TEXT, blockLinks TEXT, yn_ytChannel TEXT, yn_txtChannel TEXT, yn_roleId TEXT, welcomeChannel TEXT, rpsDaily TEXT, rpsLeaderboardUser INTEGER, rpsLeaderboardBot INTEGER, rpsPing TEXT);").run();
     sql.prepare("CREATE UNIQUE INDEX idx_guilds_id ON guilds (id);").run();
-    sql.pragma("synchronous = 1");
+    sql.pragma("synchronous = 2");
     sql.pragma("journal_mode = wal");
 }
 const membersTable = sql.prepare("SELECT count() FROM sqlite_master WHERE type='table' AND name = 'members';").get();
 if (!membersTable['count()']) {
     client.logs.db("Creating members table");
     sql.prepare("CREATE TABLE members (id TEXT, username TEXT, guildId TEXT, guildName TEXT, usingLuckCommand INTEGER, levelLuckCommand INTEGER, messages INTEGER, PRIMARY KEY (id, guildId));").run();
-    sql.pragma("synchronous = 1");
+    sql.pragma("synchronous = 2");
     sql.pragma("journal_mode = wal");
 }
 const autoTempChannelsTable = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'autoTempChannels';").get();
@@ -57,7 +57,7 @@ if (!autoTempChannelsTable['count(*)']) {
     client.logs.db("Creating autoTempChannels table");
     sql.prepare("CREATE TABLE autoTempChannels (id TEXT);").run();
     sql.prepare("CREATE UNIQUE INDEX idx_autoTempChannels_id ON autoTempChannels (id);").run();
-    sql.pragma("synchronous = 1");
+    sql.pragma("synchronous = 2");
     sql.pragma("journal_mode = wal");
 }
 client.db = sql;
@@ -67,7 +67,7 @@ if (!autoReconnectTable['count(*)']) {
     client.logs.db("Creating autoReconnect table");
     autoReconnect.prepare("CREATE TABLE autoReconnect (id TEXT PRIMARY KEY, time INTEGER, channel TEXT, message TEXT, score TEXT, usersVotes TEXT);").run();
     autoReconnect.prepare("CREATE UNIQUE INDEX idx_autoReconnect_id ON autoReconnect (id);").run();
-    autoReconnect.pragma("synchronous = 1");
+    autoReconnect.pragma("synchronous = 2");
     autoReconnect.pragma("journal_mode = wal");
 }
 client.autoReconnect = autoReconnect;
