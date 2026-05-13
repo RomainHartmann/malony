@@ -30,6 +30,9 @@ module.exports = {
 
         const db = client.db.prepare('SELECT * FROM members WHERE guildId = ? AND id = ?').get(interaction.guild.id, interaction.user.id);
         level = db?.levelLuckCommand || 0;
+
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
         setTimeout(async () => {
 
             const number1 = Math.floor(Math.random() * (all[level]?.slice || all[2].slice)) + 1;
@@ -45,14 +48,21 @@ module.exports = {
                 });
             }
 
-            interaction.editReply({
-                embeds: [
-                    new Discord.EmbedBuilder()
-                        .setColor("Grey")
-                        .setAuthor({ name: client.langs("luck", language).title })
-                        .setDescription((level >= 3 ? client.langs("luck", language).description2 : client.langs("luck", language).description).replace("{number1}", number1).replace("{number2}", number2).replace("{role}", all[level]?.role.name || all[0].role.name))
-                ]
-            });
+            const titleText = client.langs("luck", language).title;
+            const finalDescription = (level >= 3 ? client.langs("luck", language).description2 : client.langs("luck", language).description).replace("{number1}", number1).replace("{number2}", number2).replace("{role}", all[level]?.role.name || all[0].role.name);
+
+            const buildEmbed = (description) => new Discord.EmbedBuilder()
+                .setColor("Grey")
+                .setAuthor({ name: titleText })
+                .setDescription(description);
+
+            await interaction.editReply({ embeds: [buildEmbed("🎲")] }).catch(() => { });
+            await sleep(600);
+            await interaction.editReply({ embeds: [buildEmbed("🎲 🎲")] }).catch(() => { });
+            await sleep(600);
+            await interaction.editReply({ embeds: [buildEmbed("🎲 🎲 🎲")] }).catch(() => { });
+            await sleep(600);
+            await interaction.editReply({ embeds: [buildEmbed(finalDescription)] }).catch(() => { });
 
             if (number1 == number2) {
 
